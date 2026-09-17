@@ -1,0 +1,12 @@
+__pycache__/
+.pytest_cache/
+*.py[cod]
+*.sqlite
+*.sqlite3
+*.db
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+outputs/
