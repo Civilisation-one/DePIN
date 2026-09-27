@@ -1,0 +1,46 @@
+{
+  "schema": "civilisation-one/depin-tessarq-integration/v1",
+  "reviewed_at": "2026-09-27",
+  "upstream": {
+    "repository": "Civilisation-one/Quantum-Chain",
+    "branch": "main",
+    "commit": "94aa1c6382eba930fa70c5474140b0c13863f5a9",
+    "software_version": "0.2.0-dev"
+  },
+  "toolchain": {
+    "rust_version": "1.85",
+    "rust_edition": "2021"
+  },
+  "protocol": {
+    "protocol_version": 1,
+    "p2p_version": 2,
+    "signature_scheme": "ML-DSA-65",
+    "signature_standard": "FIPS 204",
+    "hash": "SHA3-256",
+    "consensus": "Tendermint-style BFT",
+    "acceptance_quorum": ">2/3 voting power"
+  },
+  "testnet_0": {
+    "chain_id": "tessarq-testnet-0",
+    "validators": 4,
+    "p2p_port": 26650,
+    "rpc_port": 8650,
+    "wireguard_udp_port": 51820,
+    "peer_policy": "validators_only",
+    "min_upgrade_lead_blocks_runbook": 600
+  },
+  "depin_python_mvp": {
+    "signature_scheme": "Ed25519",
+    "hash": "SHA-256",
+    "status": "prototype",
+    "native_tessarq_compatible": false
+  },
+  "compatibility_rule": "Do not treat Ed25519/SHA-256 DePIN MVP events as native Tessarq transactions. A migration or adapter must be explicitly versioned and must create a separately signed native Tessarq transaction.",
+  "authoritative_upstream_paths": [
+    "README.md",
+    "Cargo.toml",
+    "docs/ARCHITECTURE.md",
+    "deploy/README.md",
+    "deploy/config.example.json"
+  ]
+}

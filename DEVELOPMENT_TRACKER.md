@@ -1,6 +1,6 @@
 # Civilisation.One DePIN — Development Tracker
 
-**Tracker version:** 0.1  
+**Tracker version:** 0.2  
 **Maturity scale:** 0 Concept · 1 Specified · 2 Prototype · 3 Integrated · 4 Tested · 5 Production
 
 | ID | Workstream | Deliverable | Priority | Maturity | Status |
@@ -50,6 +50,15 @@
 | D43 | CI/CD | Automated checks, builds and releases | P1 | 0 | Planned |
 | D44 | Deployment | Container/package deployment strategy | P1 | 0 | Planned |
 | D45 | Documentation | Operator, API, security and validation docs | P0 | 1 | In progress |
+| D46 | Tessarq Integration | Pinned chain version, setup baseline and compatibility contract | P0 | 1 | Specified |
+
+## Tessarq compatibility snapshot
+
+The reviewed chain baseline is recorded in `integrations/tessarq.json` and explained in `docs/TESSARQ_INTEGRATION.md`.
+
+Current snapshot: Tessarq `0.2.0-dev`, protocol v1, P2P v2, upstream commit `94aa1c6382eba930fa70c5474140b0c13863f5a9`.
+
+A chain upgrade is not considered compatible with DePIN until the manifest, integration tests and lifecycle validation are updated.
 
 ## Milestones
 
@@ -61,6 +70,7 @@
 - receipt schema
 - trust boundaries
 - security threat model
+- Tessarq compatibility contract
 
 **Exit condition:** all P0 data contracts are versioned and reviewable.
 
@@ -76,6 +86,7 @@
 
 ### M2 — Multi-node test network
 - 3+ independently configured nodes
+- Tessarq multi-validator setup pinned and reproducible
 - resource discovery
 - scheduling
 - public audit API
@@ -112,6 +123,7 @@ Architecture
  -> Node Runtime
  -> Measurement
  -> Evidence
+ -> Tessarq Compatibility
  -> Verification
  -> Receipt
  -> Audit API

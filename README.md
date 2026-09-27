@@ -61,6 +61,20 @@ Signed Audit Receipt
       +--> Optional settlement layer
 ```
 
+## Tessarq Quantum-Chain integration
+
+Tessarq is the current Civilisation.One Layer-1 implementation for finalising DePIN contribution state, validator attestations and independently verifiable receipts.
+
+The DePIN repository pins a reviewed Tessarq compatibility snapshot instead of implicitly following the moving `Quantum-Chain/main` branch:
+
+- integration guide: `docs/TESSARQ_INTEGRATION.md`
+- machine-readable compatibility manifest: `integrations/tessarq.json`
+- upstream repository: `Civilisation-one/Quantum-Chain`
+
+Current pinned baseline: **Tessarq 0.2.0-dev**, protocol version **1**, P2P version **2**, upstream commit `94aa1c6382eba930fa70c5474140b0c13863f5a9`.
+
+The local Python DePIN MVP and native Tessarq protocol use different cryptographic formats. Ed25519/SHA-256 prototype events must not be treated as native Tessarq ML-DSA-65/SHA3-256 transactions without an explicitly versioned adapter or migration procedure.
+
 ## Design requirements
 
 - No unverifiable contribution claims.
@@ -107,8 +121,11 @@ Signed Audit Receipt
 - `README.md` — project definition and scope
 - `ARCHITECTURE.md` — system architecture and trust boundaries
 - `DEVELOPMENT_TRACKER.md` — implementation tracker
+- `docs/NODE_MVP.md` — local identity/verification prototype and limitations
+- `docs/TESSARQ_INTEGRATION.md` — Tessarq setup, versions, compatibility and operating boundary
+- `integrations/tessarq.json` — pinned Tessarq compatibility snapshot
 - Future: `API.md`, `SECURITY.md`, `VALIDATION.md`, `TESTING.md`, `ROADMAP.md`, `PROVENANCE.md`
 
 ## Scientific / engineering status
 
-This repository describes an engineering system under development. A DePIN claim is considered operational only when independently operated physical resources are actually connected, measured, verified and auditable. Architecture documents or simulated nodes alone do not constitute a deployed physical network.
+This repository describes an engineering system under development. A DePIN claim is considered operational only when independently operated physical resources are actually connected, measured, verified and auditable. Architecture documents, simulated nodes, signatures or blockchain inclusion alone do not constitute proof that a physical resource delivered the claimed service.
