@@ -21,7 +21,7 @@
     "hash": "SHA3-256",
     "consensus": "Tendermint-style BFT",
     "acceptance_quorum": ">2/3 voting power",
-    "encoding": "Borsh",
+    "encoding": "borsh",
     "signature_contexts": {
       "enrollment": "tessarq/depin/enroll/v2",
       "contribution_event": "tessarq/depin/event/v1",
