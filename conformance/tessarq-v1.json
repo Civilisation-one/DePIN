@@ -1,0 +1,184 @@
+{
+  "schema": "civilisation-one/tessarq-depin-conformance/v1",
+  "reviewed_upstream_commit": "cecbdcaaf21dba545ee11c071050870e775899d2",
+  "software_version": "0.2.0-dev",
+  "protocol_version": 1,
+  "profile": {
+    "serialization": "borsh",
+    "signature_scheme": "ML-DSA-65",
+    "contribution_signature_context": "tessarq/depin/event/v1",
+    "evidence_hash": {
+      "algorithm": "SHA3-256",
+      "domain": "tessarq/depin/evidence/v1",
+      "framing": "length-prefixed-domain-and-parts"
+    },
+    "event_id": {
+      "algorithm": "SHA3-256",
+      "domain": "tessarq/depin/event-id/v1",
+      "payload": "borsh((chain_id, ContributionEvent))"
+    },
+    "resource_classes": [
+      "compute",
+      "storage",
+      "network",
+      "sensor",
+      "research"
+    ],
+    "field_order": [
+      "node_id",
+      "sequence",
+      "resource",
+      "started_at_ms",
+      "ended_at_ms",
+      "quantity",
+      "unit",
+      "evidence_hash",
+      "policy_version",
+      "observation"
+    ]
+  },
+  "vectors": [
+    {
+      "id": "valid-minimal-compute",
+      "state": {
+        "registered": true,
+        "revoked": false,
+        "enrolled_resource": "compute",
+        "last_sequence": 0,
+        "policy_version": 1,
+        "now_ms": 1700000005000,
+        "event_max_age_ms": 300000,
+        "event_max_future_ms": 30000,
+        "signature_valid": true,
+        "duplicate_event": false
+      },
+      "event": {
+        "node_id": "1111111111111111111111111111111111111111111111111111111111111111",
+        "sequence": 1,
+        "resource": "compute",
+        "started_at_ms": 1700000000000,
+        "ended_at_ms": 1700000001000,
+        "quantity": 1,
+        "unit": "task",
+        "evidence_hash": "2222222222222222222222222222222222222222222222222222222222222222",
+        "policy_version": 1,
+        "observation": null
+      },
+      "expected": {
+        "admission": "accept",
+        "initial_status": "quarantined"
+      }
+    },
+    {
+      "id": "reject-zero-quantity",
+      "mutate": {
+        "quantity": 0
+      },
+      "base": "valid-minimal-compute",
+      "expected": {
+        "admission": "reject",
+        "reason": "invalid measurement"
+      }
+    },
+    {
+      "id": "reject-empty-unit",
+      "mutate": {
+        "unit": ""
+      },
+      "base": "valid-minimal-compute",
+      "expected": {
+        "admission": "reject",
+        "reason": "invalid measurement"
+      }
+    },
+    {
+      "id": "reject-oversized-unit",
+      "mutate": {
+        "unit": "abcdefghijklmnopqrstuvwxyz1234567"
+      },
+      "base": "valid-minimal-compute",
+      "expected": {
+        "admission": "reject",
+        "reason": "invalid measurement"
+      }
+    },
+    {
+      "id": "reject-resource-mismatch",
+      "mutate": {
+        "resource": "sensor"
+      },
+      "base": "valid-minimal-compute",
+      "expected": {
+        "admission": "reject",
+        "reason": "resource class not authorised for node"
+      }
+    },
+    {
+      "id": "reject-policy-mismatch",
+      "mutate": {
+        "policy_version": 2
+      },
+      "base": "valid-minimal-compute",
+      "expected": {
+        "admission": "reject",
+        "reason": "policy version mismatch"
+      }
+    },
+    {
+      "id": "reject-reversed-interval",
+      "mutate": {
+        "started_at_ms": 1700000002000,
+        "ended_at_ms": 1700000001000
+      },
+      "base": "valid-minimal-compute",
+      "expected": {
+        "admission": "reject",
+        "reason": "event outside freshness window"
+      }
+    },
+    {
+      "id": "reject-stale-event",
+      "mutate_state": {
+        "now_ms": 1700000402000
+      },
+      "base": "valid-minimal-compute",
+      "expected": {
+        "admission": "reject",
+        "reason": "event outside freshness window"
+      }
+    },
+    {
+      "id": "reject-future-event",
+      "mutate": {
+        "ended_at_ms": 1700000040001
+      },
+      "base": "valid-minimal-compute",
+      "expected": {
+        "admission": "reject",
+        "reason": "event outside freshness window"
+      }
+    },
+    {
+      "id": "reject-replay-sequence",
+      "mutate_state": {
+        "last_sequence": 1
+      },
+      "base": "valid-minimal-compute",
+      "expected": {
+        "admission": "reject",
+        "reason": "replayed or out-of-order sequence"
+      }
+    },
+    {
+      "id": "reject-invalid-signature",
+      "mutate_state": {
+        "signature_valid": false
+      },
+      "base": "valid-minimal-compute",
+      "expected": {
+        "admission": "reject",
+        "reason": "node event signature invalid"
+      }
+    }
+  ]
+}
