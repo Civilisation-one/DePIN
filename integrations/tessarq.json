@@ -1,11 +1,13 @@
 {
   "schema": "civilisation-one/depin-tessarq-integration/v1",
-  "reviewed_at": "2026-09-27",
+  "reviewed_at": "2026-09-28",
   "upstream": {
     "repository": "Civilisation-one/Quantum-Chain",
     "branch": "main",
-    "commit": "94aa1c6382eba930fa70c5474140b0c13863f5a9",
-    "software_version": "0.2.0-dev"
+    "commit": "cecbdcaaf21dba545ee11c071050870e775899d2",
+    "software_version": "0.2.0-dev",
+    "previous_reviewed_commit": "94aa1c6382eba930fa70c5474140b0c13863f5a9",
+    "reviewed_delta": "deployment documentation only; protocol/consensus unchanged"
   },
   "toolchain": {
     "rust_version": "1.85",
@@ -18,7 +20,18 @@
     "signature_standard": "FIPS 204",
     "hash": "SHA3-256",
     "consensus": "Tendermint-style BFT",
-    "acceptance_quorum": ">2/3 voting power"
+    "acceptance_quorum": ">2/3 voting power",
+    "encoding": "borsh",
+    "signature_contexts": {
+      "enrollment": "tessarq/depin/enroll/v2",
+      "contribution_event": "tessarq/depin/event/v1",
+      "heartbeat": "tessarq/depin/heartbeat/v1",
+      "transaction": "tessarq/tx/v1"
+    },
+    "hash_domains": {
+      "evidence": "tessarq/depin/evidence/v1",
+      "event_id": "tessarq/depin/event-id/v1"
+    }
   },
   "testnet_0": {
     "chain_id": "tessarq-testnet-0",
@@ -42,5 +55,7 @@
     "docs/ARCHITECTURE.md",
     "deploy/README.md",
     "deploy/config.example.json"
-  ]
+  ],
+  "protocol_profile": "docs/TESSARQ_PROTOCOL_PROFILE.md",
+  "conformance_vectors": "conformance/tessarq-v1.json"
 }

@@ -2,11 +2,11 @@
 
 **Integration status:** specified / development  
 **Upstream:** `Civilisation-one/Quantum-Chain`  
-**Pinned upstream commit:** `94aa1c6382eba930fa70c5474140b0c13863f5a9`  
+**Pinned upstream commit:** `cecbdcaaf21dba545ee11c071050870e775899d2`  
 **Pinned software version:** `0.2.0-dev`  
 **Protocol version:** `1`  
 **P2P version:** `2`  
-**Last reviewed:** 2026-09-27
+**Last reviewed:** 2026-09-28
 
 This document defines how the Civilisation.One DePIN repository interoperates with Tessarq. It deliberately pins an exact upstream snapshot so an upgrade of the chain does not silently redefine the DePIN protocol boundary.
 
@@ -36,7 +36,7 @@ A Tessarq receipt proves what the validator quorum finalised. It does **not** in
 | Component | Pinned value |
 |---|---|
 | Tessarq software | `0.2.0-dev` |
-| Upstream commit | `94aa1c6382eba930fa70c5474140b0c13863f5a9` |
+| Upstream commit | `cecbdcaaf21dba545ee11c071050870e775899d2` |
 | Rust toolchain minimum | `1.85` |
 | Rust edition | 2021 |
 | Chain protocol version | 1 |
@@ -50,7 +50,7 @@ A Tessarq receipt proves what the validator quorum finalised. It does **not** in
 | WireGuard port | UDP 51820 |
 | Default peer policy | `validators_only` |
 
-The canonical machine-readable copy is `integrations/tessarq.json`.
+The canonical machine-readable copy is `integrations/tessarq.json`. The exact native contribution profile is `docs/TESSARQ_PROTOCOL_PROFILE.md`, with semantic regression vectors in `conformance/tessarq-v1.json`.
 
 ## 3. Important crypto compatibility rule
 
@@ -79,7 +79,7 @@ Prerequisites:
 ```sh
 git clone https://github.com/Civilisation-one/Quantum-Chain
 cd Quantum-Chain
-git checkout 94aa1c6382eba930fa70c5474140b0c13863f5a9
+git checkout cecbdcaaf21dba545ee11c071050870e775899d2
 cargo build --release
 cargo test --workspace
 cargo clippy --workspace --all-targets -- -D warnings
@@ -128,7 +128,7 @@ curl https://sh.rustup.rs -sSf | sh -s -- -y
 . ~/.cargo/env
 git clone https://github.com/Civilisation-one/Quantum-Chain
 cd Quantum-Chain
-git checkout 94aa1c6382eba930fa70c5474140b0c13863f5a9
+git checkout cecbdcaaf21dba545ee11c071050870e775899d2
 cargo build --release
 sudo deploy/install.sh target/release/tessarq
 ```
@@ -272,7 +272,23 @@ At this pinned snapshot:
 - a finalised receipt is evidence of validator consensus, not direct proof of a physical-world event;
 - independent physical-node pilots and class-specific evidence evaluators remain required for DePIN operational claims.
 
-## 11. Upgrade checklist
+## 11. Conformance profile
+
+The DePIN repository does not duplicate Tessarq consensus code. Instead it pins the protocol surface DePIN depends on:
+
+- the exact `ContributionEvent` field order;
+- Borsh as the signed/event-ID encoding;
+- ML-DSA-65 event signatures with context `tessarq/depin/event/v1`;
+- SHA3-256 evidence commitments under `tessarq/depin/evidence/v1`;
+- SHA3-256 event IDs under `tessarq/depin/event-id/v1`;
+- admission rules for resource class, policy version, measurement bounds, freshness, sequence/replay protection and signature verification;
+- quarantine as the only state immediately after a valid submission.
+
+See `docs/TESSARQ_PROTOCOL_PROFILE.md`. The JSON vectors in `conformance/tessarq-v1.json` are checked in the DePIN test suite and are intended to be consumed by future cross-repository integration tests.
+
+The reviewed upstream movement from `94aa1c6382eba930fa70c5474140b0c13863f5a9` to `cecbdcaaf21dba545ee11c071050870e775899d2` changes only `deploy/README.md` (deployment instructions); protocol and consensus code are unchanged.
+
+## 12. Upgrade checklist
 
 Before changing the pinned Tessarq baseline:
 
